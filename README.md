@@ -30,7 +30,7 @@ Flow:
 
 1. The client applies a Visitor to an Element with `accept(visitor)`.
 2. The concrete element calls `visitor.visit(this)`.
-3. Because `this` is the concrete element type, Java selects the matching overloaded `visit(...)` method.
+3. The concrete element passes itself to the Visitor, so the matching overloaded visit(...) method is called for that specific element type.
 4. The selected Concrete Visitor performs its operation.
 
 There is **no `instanceof` or type-checking chain** anywhere in the implementation.
@@ -114,4 +114,4 @@ mvn package
 
 After you create and push your repository, replace this placeholder with your real link:
 
-`https://github.com/<username>/assignment6-visitor-pattern`
+`https://github.com/aerkenovva/assignment6-visitor-pattern`
