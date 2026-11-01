@@ -1,0 +1,30 @@
+digraph VisitorPattern {
+  graph [rankdir=TB, labelloc="t", label="Visitor Pattern - File System", fontsize=18, nodesep=0.45, ranksep=0.65];
+  node [shape=box, fontsize=10, margin="0.12,0.08"];
+  edge [fontsize=9];
+
+  Element [label="FileSystemElement\n<<interface>>\n+ accept(FileSystemVisitor)"];
+  RegularFile [label="RegularFile\n- name: String\n- sizeInBytes: long\n+ accept(visitor)\n+ getName()\n+ getSizeInBytes()"];
+  Directory [label="Directory\n- name: String\n- children: List<FileSystemElement>\n+ accept(visitor)\n+ getName()\n+ getChildren()"];
+
+  Visitor [label="FileSystemVisitor\n<<interface>>\n+ visit(RegularFile)\n+ visit(Directory)"];
+  Size [label="SizeCalculatorVisitor\n- totalSizeInBytes: long\n+ visit(RegularFile)\n+ visit(Directory)\n+ getTotalSizeInBytes()"];
+  Search [label="SearchVisitor\n- query: String\n- matchingFiles: List<String>\n+ visit(RegularFile)\n+ visit(Directory)\n+ getMatchingFiles()"];
+
+  FileSystem [label="FileSystem\n- rootElements: List<FileSystemElement>\n+ accept(FileSystemVisitor)"];
+  Main [label="Main\n+ main(String[] args)"];
+
+  RegularFile -> Element [arrowhead=empty, style=dashed, label="implements"];
+  Directory -> Element [arrowhead=empty, style=dashed, label="implements"];
+  Size -> Visitor [arrowhead=empty, style=dashed, label="implements"];
+  Search -> Visitor [arrowhead=empty, style=dashed, label="implements"];
+
+  Directory -> Element [arrowhead=odiamond, label="contains"];
+  FileSystem -> Element [arrowhead=odiamond, label="roots"];
+
+  RegularFile -> Visitor [style=dashed, label="accept(visitor)"];
+  Directory -> Visitor [style=dashed, label="accept(visitor)"];
+  Main -> FileSystem [style=dashed, label="uses"];
+  Main -> Size [style=dashed, label="creates"];
+  Main -> Search [style=dashed, label="creates"];
+}

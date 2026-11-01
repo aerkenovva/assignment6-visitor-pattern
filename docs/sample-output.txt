@@ -1,0 +1,4 @@
+VISITOR PATTERN - FILE SYSTEM
+=============================
+Total size: 12500 bytes
+Files matching '.txt': [notes.txt, todo.txt]

@@ -1,0 +1,62 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+interface FileSystemElement {
+  +accept(visitor: FileSystemVisitor): void
+}
+
+class RegularFile {
+  -name: String
+  -sizeInBytes: long
+  +accept(visitor: FileSystemVisitor): void
+  +getName(): String
+  +getSizeInBytes(): long
+}
+
+class Directory {
+  -name: String
+  -children: List<FileSystemElement>
+  +accept(visitor: FileSystemVisitor): void
+  +getName(): String
+  +getChildren(): List<FileSystemElement>
+}
+
+interface FileSystemVisitor {
+  +visit(file: RegularFile): void
+  +visit(directory: Directory): void
+}
+
+class SizeCalculatorVisitor {
+  -totalSizeInBytes: long
+  +visit(file: RegularFile): void
+  +visit(directory: Directory): void
+  +getTotalSizeInBytes(): long
+}
+
+class SearchVisitor {
+  -query: String
+  -matchingFiles: List<String>
+  +visit(file: RegularFile): void
+  +visit(directory: Directory): void
+  +getMatchingFiles(): List<String>
+}
+
+class FileSystem {
+  -rootElements: List<FileSystemElement>
+  +accept(visitor: FileSystemVisitor): void
+}
+
+class Main
+
+FileSystemElement <|.. RegularFile
+FileSystemElement <|.. Directory
+FileSystemVisitor <|.. SizeCalculatorVisitor
+FileSystemVisitor <|.. SearchVisitor
+Directory o-- "0..*" FileSystemElement : contains
+FileSystem o-- "1..*" FileSystemElement : roots
+RegularFile ..> FileSystemVisitor : accept()
+Directory ..> FileSystemVisitor : accept()
+Main ..> FileSystem : uses
+Main ..> SizeCalculatorVisitor : creates
+Main ..> SearchVisitor : creates
+@enduml
